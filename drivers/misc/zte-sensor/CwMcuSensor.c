@@ -1597,7 +1597,7 @@ static void cwmcu_work_report(struct work_struct *work)
 
 	VERBOSE(KERN_DEBUG "--CWMCU--%s in\n", __func__);
 
-	wake_lock_timeout(&sensor->data_report_lock, 10*HZ);
+	//wake_lock_timeout(&sensor->data_report_lock, 10*HZ);
 
 	if ((sensor->mcu_mode == CW_BOOT) || (sensor->mcu_status == CW_INVAILD)) {
 		printk(KERN_DEBUG "--CWMCU--%s sensor->mcu_mode = %d\n", __func__, sensor->mcu_mode);
@@ -1972,7 +1972,7 @@ static int  CWMCU_i2c_probe(struct i2c_client *client, const struct i2c_device_i
 	sensor->mcu_mode = CW_NORMAL;
 	sensor->current_timeout = 0;
 	sensor->timeout_count = 0;
-	wake_lock_init(&sensor->data_report_lock, WAKE_LOCK_SUSPEND, "cwmcu-wake-lock");
+	//wake_lock_init(&sensor->data_report_lock, WAKE_LOCK_SUSPEND, "cwmcu-wake-lock");
 
 #ifdef CWMCU_INTERRUPT
 	sensor->client->irq = gpio_to_irq(sensor->irq_gpio);
@@ -2006,7 +2006,7 @@ static int  CWMCU_i2c_probe(struct i2c_client *client, const struct i2c_device_i
 	return 0;
 
 exit_request_irq:
-	 wake_lock_destroy(&sensor->data_report_lock);
+	 //wake_lock_destroy(&sensor->data_report_lock);
 exit_free_input:
 	input_unregister_polled_device(sensor->input_polled);
 	input_free_polled_device(sensor->input_polled);
@@ -2024,7 +2024,7 @@ static int CWMCU_i2c_remove(struct i2c_client *client)
 	struct CWMCU_data *sensor = i2c_get_clientdata(client);
 	
 	free_irq(sensor->client->irq, sensor);
-	wake_lock_destroy(&sensor->data_report_lock);
+	//wake_lock_destroy(&sensor->data_report_lock);
 	input_unregister_polled_device(sensor->input_polled);
 	input_free_polled_device(sensor->input_polled);	
 	cwstm_unconfig_gpio(sensor);
